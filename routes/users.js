@@ -66,15 +66,19 @@ const updateUser = (request, response) => {
 
 const getUserLogin = (request, response) => {
   let users = request.body
-  client.query(`SELECT *
+  try{
+    client.query(`SELECT *
                 FROM users
                 WHERE user_email = '${users.email}'
                   AND user_password = '${users.password}'`, (error, results) => {
-    if (error) {
-      throw error
-    }
+    
     response.status(200).json(results.rows)
   })
+  } catch(error){
+    console.log(error);
+    response.status(500);
+  }
+  
 }
 
 
