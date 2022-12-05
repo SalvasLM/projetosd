@@ -37,4 +37,6 @@ app.delete('/api/files/:id(\\d+)', files.deleteFile);
 app.put('/api/users', users.updateUser);
 app.put('/api/files', files.updateFile);
 
+app.post('/api/login', users.getUserLogin);
+
 module.exports = app;
