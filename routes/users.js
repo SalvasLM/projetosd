@@ -64,26 +64,17 @@ const updateUser = (request, response) => {
 
 }
 
-const getUserLogin = async function(user) {
-  try{
-    let sql = `SELECT *
-                  FROM users
-                  WHERE user_email = '${user.email}'
-                    AND user_password = '${user.password}'`
-    let result = await client.query(sql);
-    let userResult = result.rows;
-    if (userResult.length > 0) {
-        console.log(JSON.stringify(userResult[0]));
-        return { status: 200, data: userResult[0] };
-    } else {
-        return { status: 404, data: { msg: "ISE." } };
+const getUserLogin = (request, response) => {
+  let users = request.body
+  client.query(`SELECT *
+                FROM users
+                WHERE user_email = '${users.email}'
+                  AND user_password = '${users.password}'`, (error, results) => {
+    if (error) {
+      throw error
     }
-  }  
-    catch (error){
-      console.log(error)
-      return { status: 500, data: error };
-    }
-
+    response.status(200).json(results.rows)
+  })
 }
 
 
