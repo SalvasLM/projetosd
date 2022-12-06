@@ -70,10 +70,10 @@ const getUserLogin = (request, response) => {
                 FROM users
                 WHERE user_email = '${users.email}'
                   AND user_password = '${users.password}'`, (error, results) => {
-    if (results.length != 1) {
-      throw error
+    if (results.length == 1) {
+      response.status(200).json(result.rows)
     } else {
-      response.status(200).json(results.rows)
+      throw error
     }
   })
 }
