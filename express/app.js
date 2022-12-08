@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 
 
 const routes = {
-    users: require('../../projetosdAPI/express/routes/usersRoutes'),
-    files: require('../../projetosdAPI/express/routes/filesRoutes'),
+    users: require('../express/routes/usersRoutes'),
+    files: require('../express/routes/filesRoutes'),
 
 };
 
