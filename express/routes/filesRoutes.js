@@ -7,9 +7,9 @@ const formidable = require('formidable');
 
 
 cloudinary.config({
-  cloud_name: 'dlzn4jynw',
-  api_key: 495483183777134,
-  api_secret: 'gEAewFKUTicNIEvTgcFNQyDaMcY',
+  cloud_name: 'dvmobgla4',
+  api_key: 515752486812418,
+  api_secret: 'zrKHfNtGdXkBBjmLlTQ_fRDIWBI',
   secure: true,
   unique_filename: true
 });
