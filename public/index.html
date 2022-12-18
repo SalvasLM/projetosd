@@ -8,6 +8,16 @@
 <body>
   <h1>Express</h1>
   <p>Welcome to Express</p>
+  <form action="http://localhost:8080/api/files" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+      <input type="file" class="form-control-file" name="product_photo">
+      <input type="text" class="form-control" placeholder="Name" name="file_name">
+      <input type="text" class="form-control" placeholder="Path:" name="file_path">
+      <input type="text" class="form-control" placeholder="Hash:" name="file_hash">
+      <input type="text" class="form-control" placeholder="user id:" name="file_user_id">
+      <input type="submit" value="Create" class="btn btn-default">
+    </div>
+  </form>
 </body>
 
 </html>

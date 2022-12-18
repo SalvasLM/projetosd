@@ -40,33 +40,32 @@ async function getById(req, res) {
     res.status(404).send('404 - Not found');
   }
 }
-/*async function create(req, res) {
+async function create(req, res) {
 
-  if (req.body.id) {
+  if (req.body.file_id) {
     res.status(400).send(`Bad request: ID should not be provided, since it is determined automatically by the database.`)
   } else {
     try{
       let form = new formidable.IncomingForm();
       await form.parse(req, async (err, fields, files) => {
         let object = fields
-        await cloudinary.uploader.upload(files.product_photo.filepath, {
+        await cloudinary.uploader.upload(files.file_file.filepath, {
           resource_type: "auto",
         })
             .then((result) => {
-              //console.log(result.secure_url);
-              object.product_photo = result.secure_url
+
+              object.file_file = result.secure_url
             })
             .catch((error) => {
               //console.log(error);
               return error
             })
-        await models.products.create({
-          product_name: object.product_stock,
-          product_description: object.product_description,
-          product_stock: object.product_stock,
-          product_price: object.product_price,
-          product_store_id: object.product_store_id,
-          product_photo: object.product_photo,
+        await models.files.create({
+          file_name: object.file_name,
+          file_path: object.file_path,
+          file_hash: object.file_hash,
+          file_file: object.file_file,
+          file_user_id: object.file_user_id,
         });
 
 
@@ -80,7 +79,7 @@ async function getById(req, res) {
     }
 
   }
-}*/
+}
 
 async function update(req, res) {
   const id = getIdParam(req);
@@ -101,7 +100,7 @@ async function update(req, res) {
 async function remove(req, res) {
   const id = getIdParam(req);
   try{
-    await models.products.destroy({
+    await models.files.destroy({
       where: {
         file_id: id
       }
@@ -119,4 +118,5 @@ module.exports = {
   getById,
   update,
   remove,
+  create,
 }
