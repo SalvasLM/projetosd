@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const { applyExtraSetup } = require('../../projetosdAPI/sequelize/extra-setup');
+const { applyExtraSetup } = require('../sequelize/extra-setup');
 const connectionString = process.env.DATABASE_URL
 const connectionHost = process.env.DATABASE_HOST
 const connectionPW = process.env.DATABASE_PASSWORD
@@ -46,8 +46,8 @@ const sequelize = new Sequelize('postgres', 'postgres', '7CnaH1Gghs0J32L', {
 
 
 const modelDefiners = [
-    users = require('../../projetosdAPI/sequelize/models/users'),
-    files = require('../../projetosdAPI/sequelize/models/files'),
+    users = require('../sequelize/models/users'),
+    files = require('../sequelize/models/files'),
 
     // Add more models here...
     // require('./models/item'),
