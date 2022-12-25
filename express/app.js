@@ -84,6 +84,12 @@ for (const [routeName, routeController] of Object.entries(routes)) {
             makeHandlerAwareOfAsyncErrors(routeController.getById)
         );
     }
+    if (routeController.uploadImage) {
+        app.post(
+            `/api/${routeName}/upload`,
+            makeHandlerAwareOfAsyncErrors(routeController.uploadImage)
+        );
+    }
 }
 
 

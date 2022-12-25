@@ -33,6 +33,7 @@ async function getAll(req, res) {
 
 async function getById(req, res) {
   const id = getIdParam(req);
+  console.log(req.body)
   const file = await models.files.findByPk(id);
   if (file) {
     res.status(200).json(file);
@@ -40,42 +41,63 @@ async function getById(req, res) {
     res.status(404).send('404 - Not found');
   }
 }
+
+async function uploadImage(req, res) {
+  try {
+    let form = new formidable.IncomingForm();
+    await form.parse(req, async (err, fields, files) => {
+      let object = fields
+      console.log(object)
+
+      await cloudinary.uploader.upload(files.file_file.filepath, {
+        resource_type: "auto",
+      })
+          .then((result) => {
+
+            let link = result.secure_url
+            res.status(200).json(link)
+          })
+          .catch((error) => {
+            //console.log(error);
+            return error
+          })
+    })
+
+  }
+  catch (err){
+    console.log(err)
+    res.status
+  }
+}
+
+
 async function create(req, res) {
 
+  let file;
+  console.log(req);
   if (req.body.file_id) {
     res.status(400).send(`Bad request: ID should not be provided, since it is determined automatically by the database.`)
   } else {
     try{
-      let form = new formidable.IncomingForm();
-      await form.parse(req, async (err, fields, files) => {
-        let object = fields
-        await cloudinary.uploader.upload(files.file_file.filepath, {
-          resource_type: "auto",
-        })
-            .then((result) => {
 
-              object.file_file = result.secure_url
-            })
-            .catch((error) => {
-              //console.log(error);
-              return error
-            })
-        await models.files.create({
+        let object = req.body
+        console.log(object)
+
+
+        file = await models.files.create({
           file_name: object.file_name,
           file_path: object.file_path,
           file_hash: object.file_hash,
-          file_file: object.file_file,
           file_user_id: object.file_user_id,
+          file_file: object.file_file,
         });
 
 
-      })
 
-
-      res.status(200).end();
+      res.status(200).json({success:"File uploaded successfully"});
     }catch (e) {
       console.log(e)
-      res.status(500).end()
+      res.status(500).json({error:e});
     }
 
   }
@@ -105,10 +127,10 @@ async function remove(req, res) {
         file_id: id
       }
     });
-    res.status(200).end();
+    res.status(200).json({success:"File deleted successfully"});
   }catch (e) {
     console.log("ERRO:" + e)
-    res.status(500).end();
+    res.status(500).json({error:e});
   }
 
 }
@@ -119,4 +141,5 @@ module.exports = {
   update,
   remove,
   create,
+  uploadImage,
 }
