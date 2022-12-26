@@ -90,6 +90,12 @@ for (const [routeName, routeController] of Object.entries(routes)) {
             makeHandlerAwareOfAsyncErrors(routeController.uploadImage)
         );
     }
+    if (routeController.getAllUserFiles) {
+        app.get(
+            `/api/${routeName}/user/:id`,
+            makeHandlerAwareOfAsyncErrors(routeController.getAllUserFiles)
+        );
+    }
 }
 
 

@@ -31,6 +31,25 @@ async function getAll(req, res) {
 
 }
 
+async function getAllUserFiles(req, res) {
+  const id = getIdParam(req);
+  try {
+    const allFiles = await models.files.findAll({
+      where: {
+        file_user_id: id
+      }
+
+    })
+
+    console.log(allFiles)
+    res.status(200).json(allFiles);
+  } catch (err) {
+    console.log(err);
+    return { status: 500, data: "INTERNAL SERVER ERROR" };
+  }
+
+}
+
 async function getById(req, res) {
   const id = getIdParam(req);
   console.log(req.body)
@@ -73,23 +92,24 @@ async function uploadImage(req, res) {
 
 async function create(req, res) {
 
-  let file;
-  console.log(req);
+
   if (req.body.file_id) {
     res.status(400).send(`Bad request: ID should not be provided, since it is determined automatically by the database.`)
   } else {
     try{
 
         let object = req.body
-        console.log(object)
+        const output = object.file_file.replace(/"/g, "");
+        console.log(output);
 
 
-        file = await models.files.create({
+
+        await models.files.create({
           file_name: object.file_name,
           file_path: object.file_path,
           file_hash: object.file_hash,
           file_user_id: object.file_user_id,
-          file_file: object.file_file,
+          file_file: output,
         });
 
 
@@ -142,4 +162,5 @@ module.exports = {
   remove,
   create,
   uploadImage,
+  getAllUserFiles,
 }
