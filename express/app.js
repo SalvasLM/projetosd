@@ -1,8 +1,25 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 
 
+// A middleware function to verify the JWT and attach the decoded
+// user object to the request object
+const verifyJwt = (req, res, next) => {
+    const token = req.headers['x-access-token'];
+    if (!token) {
+        return res.status(401).send({ auth: false, message: 'No token provided.' });
+    }
 
+    jwt.verify(token, "4ta$!sS2q#jGXOq0*7", (err, decoded) => {
+        if (err) {
+            return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        }
+        // attach the decoded user object to the request object
+        req.user = decoded;
+        next();
+    });
+};
 
 const routes = {
     users: require('../express/routes/usersRoutes'),
@@ -42,15 +59,15 @@ app.get('/', (req, res) => {
 for (const [routeName, routeController] of Object.entries(routes)) {
     if (routeController.getAll) {
         app.get(
-            `/api/${routeName}`,
+            `/api/${routeName}`, verifyJwt,
             makeHandlerAwareOfAsyncErrors(routeController.getAll)
         );
     }
     if (routeController.create) {
 
-        if(routeName === 'products'){
+        if(routeName === "files"){
             app.post(
-                `/api/${routeName}`,
+                `/api/${routeName}`, verifyJwt,
                 makeHandlerAwareOfAsyncErrors(routeController.create)
             );
         }
@@ -61,13 +78,13 @@ for (const [routeName, routeController] of Object.entries(routes)) {
     }
     if (routeController.update) {
         app.put(
-            `/api/${routeName}/:id`,
+            `/api/${routeName}/:id`,verifyJwt,
             makeHandlerAwareOfAsyncErrors(routeController.update)
         );
     }
     if (routeController.remove) {
         app.delete(
-            `/api/${routeName}/:id`,
+            `/api/${routeName}/:id`,verifyJwt,
             makeHandlerAwareOfAsyncErrors(routeController.remove)
         );
     }
@@ -80,19 +97,19 @@ for (const [routeName, routeController] of Object.entries(routes)) {
 
     if (routeController.getById) {
         app.get(
-            `/api/${routeName}/:id`,
+            `/api/${routeName}/:id`,verifyJwt,
             makeHandlerAwareOfAsyncErrors(routeController.getById)
         );
     }
     if (routeController.uploadImage) {
         app.post(
-            `/api/${routeName}/upload`,
+            `/api/${routeName}/upload`, verifyJwt,
             makeHandlerAwareOfAsyncErrors(routeController.uploadImage)
         );
     }
     if (routeController.getAllUserFiles) {
         app.get(
-            `/api/${routeName}/user/:id`,
+            `/api/${routeName}/user/:id`, verifyJwt,
             makeHandlerAwareOfAsyncErrors(routeController.getAllUserFiles)
         );
     }

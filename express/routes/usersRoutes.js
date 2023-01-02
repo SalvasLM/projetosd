@@ -2,6 +2,8 @@ const { models } = require('../../sequelize');
 const { getIdParam } = require('../../express/helpers');
 const bcrypt = require("bcrypt");
 const sequelize = require("sequelize")
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto')
 
 
 
@@ -101,8 +103,17 @@ async function login(req, res) {
     if (user) {
       const password_valid = await user.validPassword(password, user.user_password);
       if (password_valid) {
+        const token = jwt.sign({ id: user.id }, "4ta$!sS2q#jGXOq0*7", {
+          expiresIn: 86400 // expires in 24 hours
+        });
+        /*// Encrypt the user data using the 'secret' key
+        const cipher = crypto.createCipher('aes-256-cbc', 'secret');
+        let encrypted = cipher.update(JSON.stringify(user), 'utf8', 'hex');
+        encrypted += cipher.final('hex');*/
 
-        res.status(200).json(user);
+        let encrypted = encrypt(user);
+
+        res.send({ auth: true, token: token, user: encrypted });
       } else {
         res.status(400).json({error: "Password Incorrect"});
       }
@@ -118,6 +129,14 @@ async function login(req, res) {
   }
 
 
+}
+function encrypt(data){
+
+  // Encrypt the user data using the 'secret' key
+  const cipher = crypto.createCipher('aes-256-cbc', 'secret');
+  let encrypted = cipher.update(JSON.stringify(data), 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
 }
 
 
