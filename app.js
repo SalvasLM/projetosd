@@ -31,6 +31,10 @@ async function init() {
         res.set('X-Container-Id', process.env.HOSTNAME);
         next();
       });
+
+        fetch('http://localhost')
+    .then(response => response.headers.get('X-Container-Id'))
+    .then(console.log)
 }
 
 init();
