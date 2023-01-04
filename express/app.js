@@ -97,7 +97,7 @@ for (const [routeName, routeController] of Object.entries(routes)) {
 
     if (routeController.getById) {
         app.get(
-            `/api/${routeName}/:id`,verifyJwt,
+            `/api/${routeName}/:id`,
             makeHandlerAwareOfAsyncErrors(routeController.getById)
         );
     }
