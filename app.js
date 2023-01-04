@@ -2,6 +2,7 @@ const app = require('./express/app');
 const sequelize = require('./sequelize');
 const cors = require('cors')
 const PORT = 8080;
+const os = require('os');
 
 async function assertDatabaseConnectionOk() {
     console.log(`Checking database connection...`);
@@ -27,14 +28,10 @@ async function init() {
         console.log(`Express server started on port ${PORT}. Try some routes, such as '/api/users'.`);
     });
 
-    app.use((req, res, next) => {
-        res.set('X-Container-Id', process.env.HOSTNAME);
-        next();
-      });
+    app.get('/', (req, res) => {
+        res.send(`<h3>It's ${os.hostname()}</h3>`);
+    })
 
-        fetch('http://localhost:84')
-    .then(response => response.headers.get('X-Container-Id'))
-    .then(console.log)
 }
 
 init();
