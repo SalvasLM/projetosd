@@ -132,7 +132,7 @@ async function login(req, res) {
 }
 function encrypt(data) {
   // Generate a random initialization vector (IV)
-  const iv = crypto.randomBytes(16);
+  const iv = crypto.randomBytes(12);
 
   // Create the cipher using the '8x/A?D(G+KbPeShVmYq3s6v9y$B&E)H@' key and the IV
   const cipher = crypto.createCipheriv('aes-256-gcm', '8x/A?D(G+KbPeShVmYq3s6v9y$B&E)H@', iv);
