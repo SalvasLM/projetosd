@@ -23,19 +23,18 @@ const {parse} = require('pg-connection-string')
 
 });*/
 
-const config = parse(process.env.DATABASE_URL)
-    config.ssl = {
-      rejectUnauthorized: false
-    }
-
-  const pool = new Pool(config);
-
 
 
 const sequelize = new Sequelize('d5k9fjicj7hbnd', 'qtgvnmbzuexcoo', 'b9dba415de9247ba1d4970284cb5f95c8cda98b79f4825671311f7c92744c7de', {
     host:'ec2-52-30-159-47.eu-west-1.compute.amazonaws.com',
     port: connectionPort,
     dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+          require: true, // This will help you. But you will see nwe error
+          rejectUnauthorized: false // This line will fix new error
+        }
+      },
     logQueryParameters: true,
     benchmark: true,
     define: {
