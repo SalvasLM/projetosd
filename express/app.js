@@ -50,6 +50,10 @@ app.get('/', (req, res) => {
 		<p>Try some routes, such as <a href='/api/users'>/api/users</a> !</p>
 		<p>To experiment with POST/PUT/DELETE requests, use a tool for creating HTTP requests such as <a href='https://github.com/jakubroztocil/httpie#readme'>HTTPie</a>, <a href='https://www.postman.com/downloads/'>Postman</a>, or even <a href='https://en.wikipedia.org/wiki/CURL'>the curl command</a>, or write some JS code for it with <a href='https://github.com/sindresorhus/got#readme'>got</a>, <a href='https://github.com/sindresorhus/ky#readme'>ky</a> or <a href='https://github.com/axios/axios#readme'>axios</a>.</p>
 	`);
+    app.use((req, res, next) => {
+        res.set('X-Container-Id', process.env.HOSTNAME);
+        next();
+      });
 });
 
 
