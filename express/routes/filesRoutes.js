@@ -99,7 +99,8 @@ async function create(req, res) {
     try{
 
         let object = req.body
-        const output = object.file_file.replace(/"/g, "");
+        const output = object.file_file.split('"').join('').split('\\').join('');
+
         console.log(output);
 
 
