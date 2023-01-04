@@ -6,7 +6,8 @@ const connectionPW = process.env.DATABASE_PASSWORD
 const connectionUser = process.env.DATABASE_USER
 const connectionPort = process.env.DATABASE_PORT
 const connectionDatabase = process.env.DATABASE_DB
-
+const {Pool} = require('pg');
+const {parse} = require('pg-connection-string')
 
 
 
@@ -21,6 +22,14 @@ const connectionDatabase = process.env.DATABASE_DB
     }
 
 });*/
+
+const config = parse(process.env.DATABASE_URL)
+  if (!useLocalDb) {
+    config.ssl = {
+      rejectUnauthorized: false
+    }
+  }
+  const pool = new Pool(config);
 
 
 
