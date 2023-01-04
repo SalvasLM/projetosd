@@ -24,11 +24,10 @@ const {parse} = require('pg-connection-string')
 });*/
 
 const config = parse(process.env.DATABASE_URL)
-  if (!useLocalDb) {
     config.ssl = {
       rejectUnauthorized: false
     }
-  }
+
   const pool = new Pool(config);
 
 
