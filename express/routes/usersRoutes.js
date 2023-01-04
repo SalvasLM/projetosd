@@ -132,11 +132,16 @@ async function login(req, res) {
 }
 function encrypt(data){
 
-  // Encrypt the user data using the 'secret' key
-  const cipher = crypto.createCipher('aes-256-cbc', 'secret');
+  // Generate a random initialization vector (IV)
+  const iv = crypto.randomBytes(16);
+
+  // Create the cipher using the '8x/A?D(G+KbPeShVmYq3s6v9y$B&E)H@' key and the IV
+  const cipher = crypto.createCipheriv('AES-256-CBC', '8x/A?D(G+KbPeShVmYq3s6v9y$B&E)H@', iv);
   let encrypted = cipher.update(JSON.stringify(data), 'utf8', 'hex');
   encrypted += cipher.final('hex');
-  return encrypted;
+
+  // Return the IV and the encrypted data as a single buffer
+  return Buffer.concat([iv, Buffer.from(encrypted, 'hex')]);
 }
 
 
