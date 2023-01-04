@@ -23,6 +23,10 @@ async function init() {
 
     const corsOpts = { origin: '*', methods: ['GET', 'POST', 'DELETE', 'PUT'], allowedHeaders: ['Content-Type']};
     app.use(cors(corsOpts));
+    app.use((req, res, next) => {
+        res.set('X-Container-Id', process.env.HOSTNAME);
+        next();
+      });
 
     app.listen(PORT, () => {
         console.log(`Express server started on port ${PORT}. Try some routes, such as '/api/users'.`);
