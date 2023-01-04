@@ -130,18 +130,17 @@ async function login(req, res) {
 
 
 }
-function encrypt(data){
-
+function encrypt(data) {
   // Generate a random initialization vector (IV)
-  const iv = crypto.randomBytes(16);
+  const iv = crypto.randomBytes(12);
 
   // Create the cipher using the '8x/A?D(G+KbPeShVmYq3s6v9y$B&E)H@' key and the IV
-  const cipher = crypto.createCipheriv('AES-256-CBC', '8x/A?D(G+KbPeShVmYq3s6v9y$B&E)H@', iv);
+  const cipher = crypto.createCipheriv('aes-256-gcm', '8x/A?D(G+KbPeShVmYq3s6v9y$B&E)H@', iv);
   let encrypted = cipher.update(JSON.stringify(data), 'utf8', 'hex');
   encrypted += cipher.final('hex');
 
-  // Return the IV and the encrypted data as a single buffer
-  return Buffer.concat([iv, Buffer.from(encrypted, 'hex')]);
+  // Return the IV and the encrypted data as a base64-encoded string
+  return Buffer.concat([iv, Buffer.from(encrypted, 'hex')]).toString('base64');
 }
 
 
