@@ -24,8 +24,8 @@ const connectionDatabase = process.env.DATABASE_DB
 
 
 
-const sequelize = new Sequelize('postgres', 'postgres', '7CnaH1Gghs0J32L', {
-    host:'sdprojectdb.internal',
+const sequelize = new Sequelize('d5k9fjicj7hbnd', 'qtgvnmbzuexcoo', 'b9dba415de9247ba1d4970284cb5f95c8cda98b79f4825671311f7c92744c7de', {
+    host:'ec2-52-30-159-47.eu-west-1.compute.amazonaws.com',
     port: connectionPort,
     dialect: 'postgres',
     logQueryParameters: true,
