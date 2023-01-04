@@ -32,7 +32,7 @@ async function init() {
         next();
       });
 
-        fetch('http://localhost')
+        fetch('http://localhost:84')
     .then(response => response.headers.get('X-Container-Id'))
     .then(console.log)
 }
