@@ -26,6 +26,11 @@ async function init() {
     app.listen(PORT, () => {
         console.log(`Express server started on port ${PORT}. Try some routes, such as '/api/users'.`);
     });
+
+    app.use((req, res, next) => {
+        res.set('X-Container-Id', process.env.HOSTNAME);
+        next();
+      });
 }
 
 init();
