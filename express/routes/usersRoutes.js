@@ -113,7 +113,7 @@ async function login(req, res) {
 
         let encrypted = encrypt(user);
 
-        res.send({ auth: true, token: token, user: encrypted });
+        res.send({ auth: true, token: token, user: user });
       } else {
         res.status(400).json({error: "Password Incorrect"});
       }
