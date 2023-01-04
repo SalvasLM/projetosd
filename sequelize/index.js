@@ -6,7 +6,8 @@ const connectionPW = process.env.DATABASE_PASSWORD
 const connectionUser = process.env.DATABASE_USER
 const connectionPort = process.env.DATABASE_PORT
 const connectionDatabase = process.env.DATABASE_DB
-
+const {Pool} = require('pg');
+const {parse} = require('pg-connection-string')
 
 
 
@@ -24,10 +25,16 @@ const connectionDatabase = process.env.DATABASE_DB
 
 
 
-const sequelize = new Sequelize('postgres', 'postgres', '7CnaH1Gghs0J32L', {
-    host:'sdprojectdb.internal',
+const sequelize = new Sequelize('d5k9fjicj7hbnd', 'qtgvnmbzuexcoo', 'b9dba415de9247ba1d4970284cb5f95c8cda98b79f4825671311f7c92744c7de', {
+    host:'ec2-52-30-159-47.eu-west-1.compute.amazonaws.com',
     port: connectionPort,
     dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+          require: true, // This will help you. But you will see nwe error
+          rejectUnauthorized: false // This line will fix new error
+        }
+      },
     logQueryParameters: true,
     benchmark: true,
     define: {
